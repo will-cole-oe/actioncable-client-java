@@ -102,6 +102,7 @@ public class Consumer {
     }
 
     public void unsubscribeAndDisconnect() {
+        subscriptions.notifyDisconnected();
         subscriptions.removeAll();
         connection.close();
         connectionMonitor.stop();

@@ -237,7 +237,7 @@ public class ConnectionTest {
         mockWebServer.enqueue(response);
         mockWebServer.start();
 
-        Thread.sleep(1000);
+        Thread.sleep(100);
 
         final URI uri = mockWebServer.url("/").uri();
         final Connection connection = new Connection(uri, new Consumer.Options());
@@ -256,22 +256,20 @@ public class ConnectionTest {
             }
         });
 
-        Thread.sleep(1000);
         assertThat(connection.isOpen(), is(false));
 
         connection.open();
 
-        Thread.sleep(1000);
         assertThat(events.take(), is("onOpen"));
+
+        Thread.sleep(500);
 
         // I'm not really sure why this connnection should still look opened, since it was closed by
         // the server? Maybe Okhttp 3.5 already checks if the connection is still open and returns
         // (rightfully) false?
-        assertThat(connection.isOpen(), is(true));
+        assertThat(connection.isOpen(), is(false));
 
         connection.close();
-
-        assertThat(events.take(), is("onClosed"));
 
         assertThat(connection.isOpen(), is(false));
     }

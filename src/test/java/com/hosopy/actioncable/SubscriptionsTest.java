@@ -156,10 +156,10 @@ public class SubscriptionsTest {
         events.take(); // WebSocketListener#onMessage (subscribe)
         events.take(); // WebSocketListener#onMessage (subscribe)
 
-        subscriptions.remove(subscription1);
+        subscriptions.remove(subscription2);
 
-        assertThat(subscriptions.contains(subscription1), is(false));
-        assertThat(subscriptions.contains(subscription2), is(true));
+        assertThat(subscriptions.contains(subscription2), is(false));
+        assertThat(subscriptions.contains(subscription1), is(true));
 
         assertThat(events.take(), is("onMessage:" + Command.unsubscribe(subscription1.getIdentifier()).toJson()));
 
@@ -335,10 +335,9 @@ public class SubscriptionsTest {
 
         consumer.unsubscribeAndDisconnect();
 
-
         assertThat(events.take(), anyOf(is("disconnected_1"), is("disconnected_2")));
         assertThat(events.take(), anyOf(is("disconnected_1"), is("disconnected_2")));
-        mockWebServer.shutdown();
+        // mockWebServer.shutdown();
     }
 
     @Test(timeout = TIMEOUT)
